@@ -1,0 +1,2 @@
+rootProject.name = 'com.moneytorback'
+enableFeaturePreview('IMPROVED_POM_SUPPORT')
