@@ -1,8 +1,14 @@
 package com.moneytorback
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.api.gax.rpc.ApiException
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.name.Names
+import com.luriam.providers.ObjectMapperProvider
+import com.moneytorback.providers.CamelCaseObjectMapperProvider
+import com.moneytorback.providers.ValidatorProvider
+import com.moneytorback.repository.FileRepository
+import com.moneytorback.repository.ImageRepository
 import spark.Request
 import spark.Response
 import spark.ResponseTransformer
@@ -87,7 +93,6 @@ class Router {
                 "stack_trace" to e.stackTrace!!.contentToString()
             )
             println("[EXCEPTION] -> " + mapper.writeValueAsString(err))
-            injector.getInstance(TrackService::class.java).pushMetric("1", "AGROEMPRESARIO.API_EXCEPTION")
             response.status(500)
             response.body(mapper.writeValueAsString(err))
         }
@@ -101,7 +106,7 @@ class Router {
                 "error" to e.message,
                 "stack_trace" to e.stackTrace!!.contentToString()
             )
-            response.status(e.statusCode)
+            response.status(e.statusCode.code.httpStatusCode)
             response.body(mapper.writeValueAsString(err))
         }
     }
