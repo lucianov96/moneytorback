@@ -5,6 +5,7 @@ import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.name.Names
 import com.luriam.providers.ObjectMapperProvider
+import com.moneytorback.controllers.*
 import com.moneytorback.providers.CamelCaseObjectMapperProvider
 import com.moneytorback.providers.ValidatorProvider
 import com.moneytorback.repository.FileRepository
@@ -28,25 +29,36 @@ class Router {
     private val injector = Guice.createInjector(Module())
 
     fun addRoutes() {
+        val userController = injector.getInstance(UserController::class.java)
+        val expenseController = injector.getInstance(ExpenseController::class.java)
+        val reportController = injector.getInstance(ReportController::class.java)
+        val informController = injector.getInstance(InformController::class.java)
+        val cardController = injector.getInstance(CardController::class.java)
         // val categoriesController = injector.getInstance(CategoryController::class.java)
 
         port(80)
-
-        path("migrate-categories") {
-            // get(imagesController::RUN_MIGRATION, toJson())
-        }
-        // Set the router routes :o
-        path("categories") {
-            // get(categoriesController::getAllCategories, toJson())
-            // post(categoriesController::saveCategory, toJson())
-
-            path("/:id") {
-                // get(categoriesController::getCategory, toJson())
-                // get("/deep", categoriesController::getCategoryAndChildren, toJson())
-                // put(categoriesController::updateCategory, toJson())
-                // delete(categoriesController::deleteCategory, toJson())
+        path("/user") {
+            post(userController::registerUser, toJson())
+            path("/login") {
+                post(userController::login, toJson())
             }
         }
+        path("/:id") {
+            path("expenses") {
+                get(expenseController::getUserExpenses, toJson())
+                post(expenseController::registerExpense, toJson())
+            }
+            path("reports") {
+                get(reportController::getExpensesWithReport, toJson())
+            }
+            path("informs") {
+                get(informController::getInformFromRequest, toJson())
+            }
+            path("cards") {
+                post(cardController::registerCard, toJson())
+            }
+        }
+        // Set the router routes :o
 
         loadErrorHandlerRoutes()
         cors()

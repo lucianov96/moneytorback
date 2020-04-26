@@ -10,8 +10,8 @@ import spark.Request
 import javax.validation.Validator
 
 open class AbstractController(
-        private val mapper: ObjectMapper,
-        private val validator: Validator
+    private val mapper: ObjectMapper,
+    private val validator: Validator
 ) {
     protected fun <T> parseRequestBody(request: Request, desiredClass: Class<T>): T {
         val parsed = try {
@@ -33,10 +33,14 @@ open class AbstractController(
         return parsed
     }
 
+    fun getUserIdFromRequest(request: Request): Long? {
+        return request.params().getOrDefault(":id", null).toLong()
+    }
+
     private fun getExceptionParameter(e: JsonMappingException): String =
-            e.path.joinToString(".") {
-                if (it.index >= 0)
-                    "[${it.index}]"
-                else it.fieldName
-            }
+        e.path.joinToString(".") {
+            if (it.index >= 0)
+                "[${it.index}]"
+            else it.fieldName
+        }
 }
