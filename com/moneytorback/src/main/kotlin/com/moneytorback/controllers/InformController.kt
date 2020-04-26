@@ -5,17 +5,21 @@ import javax.validation.Validator
 import com.google.inject.Inject
 import com.moneytorback.model.Inform
 import com.moneytorback.model.InformResponse
+import com.moneytorback.services.InformService
 import spark.Request
 import spark.Response
+import javax.servlet.http.HttpServletResponse.SC_OK
 
 class InformController @Inject constructor(
     private val mapper: ObjectMapper,
-    private val validator: Validator
+    private val validator: Validator,
+    private val informService: InformService
 ) : AbstractController(mapper, validator) {
 
     fun getInformFromRequest(request: Request, response: Response): List<InformResponse> {
+        val userId = getUserIdFromRequest(request)
         val inform = parseRequestBody(request, Inform::class.java)
-        // TODO call service to get inform
-        return listOf()
+        response.status(SC_OK)
+        return informService.getInform(userId, inform)
     }
 }

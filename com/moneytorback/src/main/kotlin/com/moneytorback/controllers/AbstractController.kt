@@ -33,8 +33,8 @@ open class AbstractController(
         return parsed
     }
 
-    fun getUserIdFromRequest(request: Request): Long? {
-        return request.params().getOrDefault(":id", null).toLong()
+    fun getUserIdFromRequest(request: Request): Long {
+        return request.params().getOrDefault(":id", "0").toLong()
     }
 
     private fun getExceptionParameter(e: JsonMappingException): String =
