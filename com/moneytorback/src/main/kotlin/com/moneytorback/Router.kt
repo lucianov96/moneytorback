@@ -55,6 +55,7 @@ class Router {
                 get(informController::getInformFromRequest, toJson())
             }
             path("cards") {
+                get(cardController::getCards, toJson())
                 post(cardController::registerCard, toJson())
             }
         }
