@@ -1,7 +1,7 @@
 package com.moneytorback.model
 
 open class Card(
-    val id: Long,
+    val userId: Long,
     val firstFourNumbers: Long,
     val lastFourNumbers: Long,
     val cardType: String,
