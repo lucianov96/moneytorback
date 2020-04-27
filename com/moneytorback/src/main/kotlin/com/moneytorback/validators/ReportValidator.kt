@@ -11,7 +11,8 @@ class ReportValidator {
         return validateReportDescription(report.description) &&
                 validateReportPaidMethod(report.paidMethod) &&
                 validateCondition(report.amountCondition) &&
-                validateCondition(report.dateCondition)
+                validateCondition(report.dateCondition) &&
+                validateFilter(report.filter)
     }
 
     private fun validateReportDescription(description: String): Boolean {
@@ -29,5 +30,9 @@ class ReportValidator {
         return condition.toUpperCase() == EQUAL.name ||
                 condition.toUpperCase() == LESS.name ||
                 condition.toUpperCase() == MESS.name
+    }
+
+    private fun validateFilter(filter: String): Boolean {
+        return filter == "Expense" || filter == "Entry" || filter == "Both"
     }
 }

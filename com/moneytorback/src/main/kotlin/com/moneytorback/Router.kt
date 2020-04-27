@@ -30,11 +30,10 @@ class Router {
 
     fun addRoutes() {
         val userController = injector.getInstance(UserController::class.java)
-        val expenseController = injector.getInstance(ExpenseController::class.java)
+        val movementController = injector.getInstance(MovementController::class.java)
         val reportController = injector.getInstance(ReportController::class.java)
         val informController = injector.getInstance(InformController::class.java)
         val cardController = injector.getInstance(CardController::class.java)
-        // val categoriesController = injector.getInstance(CategoryController::class.java)
 
         port(80)
         path("/user") {
@@ -45,11 +44,15 @@ class Router {
         }
         path("/:id") {
             path("expenses") {
-                get(expenseController::getUserExpenses, toJson())
-                post(expenseController::registerExpense, toJson())
+                get(movementController::getUserMovements, toJson())
+                post(movementController::registerMovement, toJson())
+            }
+            path("entries") {
+                get(movementController::getUserMovements, toJson())
+                post(movementController::registerMovement, toJson())
             }
             path("reports") {
-                get(reportController::getExpensesWithReport, toJson())
+                get(reportController::getMovementsWithReport, toJson())
             }
             path("informs") {
                 get(informController::getInformFromRequest, toJson())

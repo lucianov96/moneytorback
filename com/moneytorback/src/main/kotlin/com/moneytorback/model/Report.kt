@@ -9,5 +9,6 @@ open class Report(
     val amountCondition: String,
     val amount: Long,
     val dateCondition: String,
-    val date: Date
+    val date: Date,
+    val filter: String
 )
